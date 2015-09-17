@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+
+    defaultConfig {
+        applicationId "com.example.andre.instagramclient"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    // sends newtork requests
+    compile 'com.loopj.android:android-async-http:1.4.8'
+    // gets the photos
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // added this because a web sight sead to to resolve errors with Header not being defined
+    compile 'org.apache.httpcomponents:httpcore:4.4.1'
+}
