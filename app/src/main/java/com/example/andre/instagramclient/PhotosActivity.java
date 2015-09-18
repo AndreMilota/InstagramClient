@@ -1,5 +1,6 @@
 package com.example.andre.instagramclient;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.widget.ListView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.squareup.picasso.Transformation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +26,9 @@ public class PhotosActivity extends AppCompatActivity {
     public static final String CLIENT_ID = "4bb150286f6f4e9f8f6a238fa9204383";
     private ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdaptor aPhotos;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +42,8 @@ public class PhotosActivity extends AppCompatActivity {
         // set the adaptor binding it to the list view
         lvPhotos.setAdapter(aPhotos);
         FetchPopularPhotos();
+
+
     }
 
     // triggers the request
@@ -74,6 +82,7 @@ public class PhotosActivity extends AppCompatActivity {
                         // - Caption: { "data" => [x]=> "caption" => "text"}
                         photo.caption = photoJSON.getJSONObject("caption").getString("text");
 
+
                         // likes
                         photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
                         // photo.type = photoJSON.getJSONObject("type").getString("text");
@@ -83,13 +92,15 @@ public class PhotosActivity extends AppCompatActivity {
                         // height
                         photo.imageHieight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
 
-
                         // creation time
 
                         long t = photoJSON.getJSONObject("caption").getInt("created_time");
                         Date df = new Date(t * 1000);
                         photo.time = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
 
+                        // get the profile image
+
+                        photo.profileImageUrl = photoJSON.getJSONObject("user").getString("profile_picture");
 
 
                         photos.add(photo);
