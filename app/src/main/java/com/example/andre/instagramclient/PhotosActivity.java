@@ -1,6 +1,7 @@
 package com.example.andre.instagramclient;
 
 import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,18 +22,47 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+
+
 public class PhotosActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "4bb150286f6f4e9f8f6a238fa9204383";
     private ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdaptor aPhotos;
 
+    private SwipeRefreshLayout swipeContainer;
 
+    private AsyncHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
+
+        // create the network client
+        client = new AsyncHttpClient();
+
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+               // FetchPopularPhotos(); // may need to replace this function
+
+                // Send request for popular photos
+                //photos = new ArrayList<InstagramPhoto>();
+                photos.clear();
+
+                FetchPopularPhotos();
+                aPhotos.notifyDataSetChanged();
+           }
+        });
+
+
         // Send request for popular photos
         photos = new ArrayList<InstagramPhoto>();
         // create the adaptor linking it to the source
@@ -54,8 +84,7 @@ public class PhotosActivity extends AppCompatActivity {
 
         String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
 
-        // create the network client
-        AsyncHttpClient client = new AsyncHttpClient();
+
 
         // trigger the get request
         client.get(url, null, new JsonHttpResponseHandler(){
@@ -111,8 +140,6 @@ public class PhotosActivity extends AppCompatActivity {
 
                 aPhotos.notifyDataSetChanged();
             }
-
-
             // of failure
 
             @Override
@@ -122,6 +149,10 @@ public class PhotosActivity extends AppCompatActivity {
         });
 
     }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
