@@ -89,6 +89,12 @@ public class InstagramPhotosAdaptor extends ArrayAdapter<InstagramPhoto> {
 
         // return the created item as a viwew
 
+        TextView comment1 = (TextView) convertView.findViewById(R.id.comment1);
+        TextView comment2 = (TextView) convertView.findViewById(R.id.comment2);
+
+        comment1.setText(photo.comment1);
+        comment2.setText(photo.comment2);
+
         return convertView;
 
     }
