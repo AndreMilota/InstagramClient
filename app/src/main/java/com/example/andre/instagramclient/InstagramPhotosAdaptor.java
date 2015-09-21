@@ -15,6 +15,8 @@ import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
+import static com.example.andre.instagramclient.R.drawable.loading;
+
 /**
  * Created by Andre on 9/15/2015.
  */
@@ -75,10 +77,15 @@ public class InstagramPhotosAdaptor extends ArrayAdapter<InstagramPhoto> {
 
 
         // insert the image using pacaso
-        Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
+        Picasso.with(getContext()).load(photo.imageUrl).placeholder(R.drawable.loading).into(ivPhoto);
 
         // add the user profile image
-        Picasso.with(getContext()).load(photo.profileImageUrl).into(ivUsrPhoto);
+
+        Picasso.with(getContext()).
+                load(photo.profileImageUrl).
+                into(ivUsrPhoto);
+
+       // Picasso.with(getContext()).load(photo.profileImageUrl).into(ivUsrPhoto);
 
         /*Picasso.with(getContext())
                 .load(photo.profileImageUrl)
